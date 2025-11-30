@@ -12,7 +12,6 @@ REMOTE_HASH=$(git rev-parse origin/main)
 if [ "$LOCAL_HASH" != "$REMOTE_HASH" ]; then
     echo "Обновления найдены. Пуллим и пересобираем контейнеры..."
     git pull origin main
-    chmod +x deploy.sh
     docker compose up -d --build
     echo "Деплой завершён."
 else

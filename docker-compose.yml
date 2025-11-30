@@ -1,0 +1,28 @@
+services:
+    redis:
+        image: redis:latest
+        container_name: redis
+        restart: unless-stopped
+        volumes:
+            - ${REDIS_PATH}:/data
+        command:
+            - redis-server
+            - --appendonly
+            - yes
+            - --dir
+            - /data
+            - --appendfsync
+            - everysec
+            - --save
+            - ""
+
+    tg-bot:
+        build: .
+        container_name: tg-bot
+        volumes:
+            - ${DB_PATH}:/data
+        environment:
+            - BOT_TOKEN=${BOT_TOKEN}
+            - ADMIN_ID=${ADMIN_ID}
+        depends_on:
+            - redis
